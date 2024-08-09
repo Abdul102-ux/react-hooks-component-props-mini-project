@@ -1,34 +1,34 @@
 import "@testing-library/jest-dom";
-import { render } from "@testing-library/react";
-import ArticleList from "../components/ArticleList";
+import { render, screen } from "@testing-library/react";
+import App from "../components/App"; 
 
-const posts = [
-  {
-    id: 1,
-    title: "Components 101",
-    date: "December 15, 2020",
-    preview: "Setting up the building blocks of your site",
-  },
-  {
-    id: 2,
-    title: "React Data Flow",
-    date: "December 11, 2020",
-    preview: "Passing props is never passé",
-  },
-  {
-    id: 3,
-    title: "Function Components vs Class Components",
-    date: "December 10, 2020",
-    preview: "React, meet OOJS.",
-  },
-];
-
-test("renders a <main> element", () => {
-  const { container } = render(<ArticleList posts={posts} />);
-  expect(container.querySelector("main")).toBeInTheDocument();
+test("renders all articles", () => {
+  render(<App />);
+  
+  
+  expect(screen.getByText("Components 101")).toBeInTheDocument();
+  expect(screen.getByText("React Data Flow")).toBeInTheDocument();
+  expect(screen.getByText("Function vs Class Components")).toBeInTheDocument();
 });
 
-test("renders a Article component for each post passed as a prop", () => {
-  const { container } = render(<ArticleList posts={posts} />);
-  expect(container.querySelector("main").children).toHaveLength(3);
+test("renders the correct article details", () => {
+  render(<App />);
+  
+  
+  const article1 = screen.getByText("Components 101");
+  expect(article1).toBeInTheDocument();
+  expect(article1.nextElementSibling).toHaveTextContent("December 15, 2020");
+  expect(article1.nextElementSibling.nextElementSibling).toHaveTextContent("Setting up the building blocks of your site");
+
+  
+  const article2 = screen.getByText("React Data Flow");
+  expect(article2).toBeInTheDocument();
+  expect(article2.nextElementSibling).toHaveTextContent("December 11, 2020");
+  expect(article2.nextElementSibling.nextElementSibling).toHaveTextContent("Passing props is never passé");
+
+  
+  const article3 = screen.getByText("Function vs Class Components");
+  expect(article3).toBeInTheDocument();
+  expect(article3.nextElementSibling).toHaveTextContent("December 10, 2020");
+  expect(article3.nextElementSibling.nextElementSibling).toHaveTextContent("React, meet OOJS.");
 });
